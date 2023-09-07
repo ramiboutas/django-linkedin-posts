@@ -1,6 +1,8 @@
 linkedin-posts
 django
+pillow
 python-dotenv
 ipython
 coverage
 unittest-parametrize
+black

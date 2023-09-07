@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "django-linkedin-posts"
-version = "0.0.0"
+version = "0.0.1"
 authors = [{ name = "Rami", email = "ramiboutas@protonmail.com" }]
 description = "An app to manage Linkedin posts in a Django project"
 readme = "README.md"
@@ -18,7 +18,7 @@ classifiers = [
   "Framework :: Django :: 4",
 ]
 
-dependencies = ["linkedin-posts", "django"]
+dependencies = ["linkedin-posts", "pillow", "django"]
 
 [tool.setuptools]
 
