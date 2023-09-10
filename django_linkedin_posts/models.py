@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from linkedin_posts.posts import share_post
@@ -51,6 +51,11 @@ class Post(models.Model):
         _("Response code when posting"), null=True, blank=True, editable=False
     )
 
+    @cached_property
+    def url(self):
+        if self.post_urn:
+            return "https://www.linkedin.com/feed/update/%s/" % self.post_urn
+
     def upload_image(self):
         if self.image is None:
             return self
@@ -91,7 +96,6 @@ class Post(models.Model):
 
 class PostShare(models.Model):
     post = models.OneToOneField(Post, on_delete=models.CASCADE)
-
     share = models.BooleanField(default=False)
     upload_image = models.BooleanField(default=False)
 

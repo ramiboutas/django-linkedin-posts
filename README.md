@@ -33,7 +33,9 @@ LINKEDIN_AUTHOR_TPYE="organization" # "organization" or "person"
 LINKEDIN_AUTHOR_ID=os.environ.get("LINKEDIN_AUTHOR_ID")
 LINKEDIN_ACCESS_TOKEN=os.environ.get("LINKEDIN_ACCESS_TOKEN")
 
-## Not needed at the moment
+## The following keys are not needed at the moment.action-checkbox
+## But they are planned to be used.
+## For example for updating the Access Token using the Refresh Token
 # LINKEDIN_CLIENT_ID=os.environ.get("LINKEDIN_CLIENT_ID")
 # LINKEDIN_CLIENT_SECRET=os.environ.get("LINKEDIN_CLIENT_SECRET") 
 # LINKEDIN_REFRESH_TOKEN=os.environ.get("LINKEDIN_REFRESH_TOKEN") 
@@ -54,6 +56,10 @@ post = Post.objects.create(
 )
 
 # share it in Linkedin 
-post.share()
+sharedpost = post.share()
+
+# Attention! sharedpost and post instances are the same one,
+# but the sharedpost has more info (data collected from Linkedin).
 
 ```
+
