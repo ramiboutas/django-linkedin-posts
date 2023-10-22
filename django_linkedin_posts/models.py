@@ -11,7 +11,7 @@ from linkedin_posts.images import upload_image
 
 def _get_image_upload_path(instance, filename):
     now = timezone.now()
-    return "linkedin-posts/%s/%s/%s/%s", (now.year, now.month, now.day, filename)
+    return "linkedin-posts/%s/%s/%s/%s" % (now.year, now.month, now.day, filename)
 
 
 class Post(models.Model):
@@ -42,13 +42,13 @@ class Post(models.Model):
         editable=False,
     )
     image_code = models.PositiveSmallIntegerField(
-        _("Response code when uploading image"),
+        _("Image response code"),
         null=True,
         blank=True,
         editable=False,
     )
     post_code = models.PositiveSmallIntegerField(
-        _("Response code when posting"), null=True, blank=True, editable=False
+        _("Share response code"), null=True, blank=True, editable=False
     )
 
     @cached_property
@@ -67,11 +67,16 @@ class Post(models.Model):
             file=self.image.read(),
         )
         self.image_urn = image_urn
-        self.image_code = response.code
+        self.image_code = response.status_code
         self.save()
         return self
 
-    def share(self):
+    def share(
+        self,
+        visibility: str = "PUBLIC",
+        feed_distribution: str = "MAIN_FEED",
+        container: str | dict = None,
+    ):
         if self.image_urn:
             response = share_post_with_media(
                 settings.LINKEDIN_ACCESS_TOKEN,
@@ -79,6 +84,10 @@ class Post(models.Model):
                 author_type=settings.LINKEDIN_AUTHOR_TPYE,
                 comment=self.comment,
                 media_id=self.image_urn,
+                feed_distribution=feed_distribution,
+                container=container,
+                visibility=visibility,
+                use_requests=True,
             )
 
         else:
@@ -87,9 +96,16 @@ class Post(models.Model):
                 author_id=settings.LINKEDIN_AUTHOR_ID,
                 author_type=settings.LINKEDIN_AUTHOR_TPYE,
                 comment=self.comment,
+                feed_distribution=feed_distribution,
+                container=container,
+                visibility=visibility,
+                use_requests=True,
             )
-        self.post_urn = response.getheader("x-restli-id")
-        self.post_code = response.code
+        try:
+            self.post_urn = response.headers["x-restli-id"]
+        except KeyError:
+            pass
+        self.post_code = response.status_code
         self.save()
         return self
 
