@@ -29,16 +29,16 @@ from dotenv import load_dotenv # python-dotenv
 
 load_dotenv() 
 
-LINKEDIN_AUTHOR_TPYE="organization" # "organization" or "person"
-LINKEDIN_AUTHOR_ID=os.environ.get("LINKEDIN_AUTHOR_ID")
-LINKEDIN_ACCESS_TOKEN=os.environ.get("LINKEDIN_ACCESS_TOKEN")
+LINKEDIN_AUTHOR_TPYE = "organization" # "organization" or "person"
+LINKEDIN_AUTHOR_ID = os.environ.get("LINKEDIN_AUTHOR_ID")
+LINKEDIN_ACCESS_TOKEN = os.environ.get("LINKEDIN_ACCESS_TOKEN")
 
-## The following keys are not needed at the moment.action-checkbox
+## The following keys are not needed at the moment
 ## But they are planned to be used.
 ## For example for updating the Access Token using the Refresh Token
-# LINKEDIN_CLIENT_ID=os.environ.get("LINKEDIN_CLIENT_ID")
-# LINKEDIN_CLIENT_SECRET=os.environ.get("LINKEDIN_CLIENT_SECRET") 
-# LINKEDIN_REFRESH_TOKEN=os.environ.get("LINKEDIN_REFRESH_TOKEN") 
+# LINKEDIN_CLIENT_ID = os.environ.get("LINKEDIN_CLIENT_ID")
+# LINKEDIN_CLIENT_SECRET = os.environ.get("LINKEDIN_CLIENT_SECRET") 
+# LINKEDIN_REFRESH_TOKEN = os.environ.get("LINKEDIN_REFRESH_TOKEN") 
 
 ```
 

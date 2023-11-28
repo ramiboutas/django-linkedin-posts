@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         null=True,
-                        upload_to=django_linkedin_posts.models._get_image_upload_path,
+                        upload_to=django_linkedin_posts.models.image_path,
                     ),
                 ),
                 ("image_title", models.CharField(blank=True, max_length=64, null=True)),

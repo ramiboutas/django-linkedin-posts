@@ -1,0 +1,2 @@
+class PollOptionsError(Exception):
+    pass

@@ -6,3 +6,4 @@ ipython
 coverage
 unittest-parametrize
 black
+pyclean

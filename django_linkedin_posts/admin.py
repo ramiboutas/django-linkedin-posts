@@ -1,24 +1,25 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Post, Poll, PollOption, PostImage
 
 
-from .models import Post
-from .models import PostShare
+class PostImageInline(admin.TabularInline):
+    model = PostImage
+    extra = 1
 
 
-admin.site.register(PostShare)
+class PollOptionInline(admin.TabularInline):
+    model = PollOption
+    extra = 1
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = (
-        "comment",
-        "post_urn",
-        "post_code",
-        "image_urn",
-        "image_code",
-        "url",
-    )
-    readonly_fields = ("post_urn", "post_code", "image_urn", "image_code")
-    list_filter = ("post_code", "image_code")
+    list_display = ("comment", "urn", "response_code", "response_text", "url")
+    readonly_fields = ("urn", "response_code", "response_text", "url")
+    inlines = (PostImageInline,)
+
+
+@admin.register(Poll)
+class PollAdmin(admin.ModelAdmin):
+    inlines = (PollOptionInline,)
