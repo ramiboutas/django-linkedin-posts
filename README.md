@@ -44,10 +44,9 @@ LINKEDIN_ACCESS_TOKEN = os.environ.get("LINKEDIN_ACCESS_TOKEN")
 
 ## Usage
 
-* Create a simple Post
+### Create a simple Post
 
 ```python
-
 from django_linkedin_posts.models import Post
 
 # create a post instance in the db
@@ -56,10 +55,23 @@ post = Post.objects.create(
 )
 
 # share it in Linkedin 
-sharedpost = post.share()
+post.share()
 
-# Attention! sharedpost and post instances are the same one,
-# but the sharedpost has more info (data collected from Linkedin).
 
 ```
 
+
+
+### Create a poll with options 
+
+```python
+from django_linkedin_posts.models import create_poll_with_options
+
+# create a poll with its options. 
+p = create_poll_with_options("hello", "What's up?", ["good", "bad"])
+
+# share it
+p.share()
+
+
+```

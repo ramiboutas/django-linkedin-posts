@@ -1,62 +1,49 @@
-# from pathlib import Path
+from django.test import TestCase
 
-# from django.utils import timezone
-# from django.conf import settings
-# from django.core.files.base import ContentFile
-
-
-# from django_tweets.models import Tweet
-# from django_tweets.models import TweetFile
-# from django_tweets.models import TweetPublication
-
-# from unittest_parametrize import parametrize
-# from unittest_parametrize import ParametrizedTestCase
+from django_linkedin_posts.models import (
+    Post,
+    PostImage,
+    Poll,
+    PollOption,
+    Comment,
+    CommentImage,
+)
 
 
-# now = timezone.now()
-# now_tupple_6 = (now.year, now.month, now.day, now.hour, now.minute, now.second)
-# now_str = "%s-%s-%s %s:%s:%s" % now_tupple_6
+class PostTests(TestCase):
+    def test_share_and_delete_text_post(self):
+        p = Post.objects.create(
+            text="Hello friends, this is just a test from my Python package django-linkedin-posts"
+        )
+        p.share()
+        self.assertEqual(201, p.response_code)
+
+        p.linkedin_delete()
+        self.assertEqual(204, p.response_code)
 
 
-# class TweetModelTests(ParametrizedTestCase):
-#     def setUp(self):
-#         # Setup run before every test method.
-#         Tweet.objects.all().delete()
-#         TweetFile.objects.all().delete()
-#         TweetPublication.objects.all().delete()
+class PollTests(TestCase):
+    def test_share_and_delete_poll(self):
+        # Poll create in the db
+        p = Poll.objects.create(
+            question_text="Do you like this package?",
+            comment_text="Check out this poll!",
+        )
+        PollOption.objects.create(poll=p, text="No")
+        PollOption.objects.create(poll=p, text="Yes")
 
-#     def tearDown(self):
-#         # Clean up run after every test method.
-#         Tweet.objects.all().delete()
-#         TweetFile.objects.all().delete()
-#         TweetPublication.objects.all().delete()
+        # Poll share
+        p.share()
+        self.assertEqual(201, p.response_code)
 
-#     def test_create_and_delete_tweet(self):
-#         text = "%s Testing django-tweets." % now_str
-#         tweet = Tweet.objects.create(text=text)
-#         published_tweet = tweet.publish()
-#         published_tweet.delete()
+        ## Create comment to poll
+        c = Comment.objects.create(
+            poll=p, text="I do not want to respond to this poll, just to comment here!"
+        )
+        c.share()
 
-#     @parametrize(
-#         ("extension", "expected"),
-#         [
-#             ("gif", True),
-#             ("jpg", True),
-#             # ("mp4", True), # not working
-#             ("png", True),
-#         ],
-#     )
-#     def test_mediafiles(self, extension: str, expected: bool):
-#         path = Path(settings.BASE_DIR / "tests" / "samples" / f"sample.{extension}")
-#         with open(path, "rb") as f:
-#             f.seek(0)
-#             contents = f.read()
-#         mediafile = TweetFile.objects.create(title="nice photo")
-#         mediafile.file.save(path.name, ContentFile(contents))
-#         mediafile = mediafile.upload()
-#         tweet = Tweet.objects.create(
-#             text="%s Testing a tweet with a %s file" % (now_str, extension)
-#         )
-#         tweet.files.add(mediafile)
-#         tweet.publish()
-#         tweet.delete()
+        self.assertEqual(201, c.response_code)
+
+        # Poll delete
+        p.linkedin_delete()
+        self.assertEqual(204, p.response_code)

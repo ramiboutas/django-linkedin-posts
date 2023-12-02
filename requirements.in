@@ -1,7 +1,7 @@
 linkedin-posts
 django
 pillow
-python-dotenv
+django-dotenv
 ipython
 coverage
 unittest-parametrize

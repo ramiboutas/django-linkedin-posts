@@ -1,9 +1,15 @@
 import os
 from pathlib import Path
 
+import os
+
+import dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv.read_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -14,7 +20,9 @@ SECRET_KEY = "django-insecure-6%glr18lljpdr-r_hx+_!@u(co89xb9jyn2(qus+d+!(7da@8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
+
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000/", "https://127.0.0.1:8000/"]
 
 
 # Application definition
@@ -106,10 +114,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 ## thid-party apps
 
 # django-linkedin-posts (our app)
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 LINKEDIN_CLIENT_ID = os.environ.get("LINKEDIN_CLIENT_ID")
@@ -118,4 +122,4 @@ LINKEDIN_CLIENT_SECRET = os.environ.get("LINKEDIN_CLIENT_SECRET")
 LINKEDIN_AUTHOR_TPYE = "person"
 LINKEDIN_AUTHOR_ID = os.environ.get("LINKEDIN_AUTHOR_ID")
 LINKEDIN_ACCESS_TOKEN = os.environ.get("LINKEDIN_ACCESS_TOKEN")
-LINKEDIN_REFRESH_TOKEN = os.environ.get("LINKEDIN_REFRESH_TOKEN")
+# LINKEDIN_REFRESH_TOKEN = os.environ.get("LINKEDIN_REFRESH_TOKEN")
